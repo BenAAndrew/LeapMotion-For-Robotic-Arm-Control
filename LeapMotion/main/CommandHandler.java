@@ -1,6 +1,6 @@
 package main;
 
-public class CommandHandler implements Runnable{
+public class CommandHandler {
 	final static String RESET = "r";
 	final static String KILL = "k";
 	final static String WAKE = "w";
@@ -34,14 +34,6 @@ public class CommandHandler implements Runnable{
 		SerialHandler.sendCode(WAKE);
 		asleep = false;
 		System.out.println("WAKE");
-	}
-
-	@Override
-	public void run() {
-		while(true) {
-			if(System.currentTimeMillis() > lastCommand + WAIT_TIME)
-				sleep();
-		}
 	}
 	
 }

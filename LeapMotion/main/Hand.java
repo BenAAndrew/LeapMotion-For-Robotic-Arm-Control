@@ -11,8 +11,6 @@ public class Hand {
 		Controller controller = new Controller();
 		controller.addListener(listener);
 		CommandHandler commandHandler = new CommandHandler();
-		Thread t = new Thread(commandHandler);
-		t.start();
 		Scanner scanner = new Scanner(System.in);
 
 		while(true) {
