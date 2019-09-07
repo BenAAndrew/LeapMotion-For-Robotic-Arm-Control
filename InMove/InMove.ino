@@ -74,5 +74,6 @@ int processInstruction(char* input){
         fingers[i].write(FINGER_OPEN);
       }
     }
+    Serial.flush();
   }
 }
