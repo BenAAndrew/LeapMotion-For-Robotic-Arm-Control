@@ -6,9 +6,6 @@ public class CommandHandler {
 	final static String WAKE = "w";
 	public static boolean asleep = false;
 	
-	public static long lastCommand = System.currentTimeMillis();
-	final long WAIT_TIME = 5000;
-	
 	public boolean command(String command) {
 		switch(command) {
 			case "k": sleep(); return true;

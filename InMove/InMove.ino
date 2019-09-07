@@ -1,6 +1,5 @@
 #include <Servo.h>
-#define INST_ARRAY_LEN 20
-#define CHAR_SUBTRACTION 48
+#define INST_ARRAY_LEN 6
 #define FINGER_CLOSED 140
 #define FINGER_OPEN 0
 const int PINS[5] = {2,12,8,10,4};
@@ -67,15 +66,13 @@ int processInstruction(char* input){
   } else if(input[0] == 'r'){
     reset();
   } else {
-    int index = input[0] - CHAR_SUBTRACTION;
-    bool state = bool(input[1] - CHAR_SUBTRACTION);
-    if (state != positions[index]){
-      if(state){
-        fingers[index].write(FINGER_CLOSED);
+    for(int i = 0; i < 5; i++){
+      Serial.println(input[i] == '1');
+      if(input[i] == '1'){
+        fingers[i].write(FINGER_CLOSED);
       } else {
-        fingers[index].write(FINGER_OPEN);
+        fingers[i].write(FINGER_OPEN);
       }
-      positions[index] = state;
     }
   }
 }

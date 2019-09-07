@@ -1,34 +1,48 @@
 package main;
 
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.FingerList;
+
 public class DescisionHandler {
 	boolean[] positions = new boolean[]{false,false,false,false,false};
-	final int[] CLOSE_THRESHOLD = new int[]{75, 80, 95, 90, 80};
-	final int[] OPEN_THRESHOLD = new int[]{80, 90, 100, 100, 90};
+	char[] lastState = new char[]{'0','0','0','0','0'};
 	SerialHandler serialHandler;
 	
 	public DescisionHandler() {
 		serialHandler = new SerialHandler();
 	}
 	
-	public void moveFinger(int index, boolean on) {
-		if (CommandHandler.asleep)
-			CommandHandler.wake();
-		String command = String.valueOf(index);
-		if(on) {
-			command += "1";
-			positions[index] = true;
-		} else {
-			command += "0";
-			positions[index] = false;
+	public int getFingerIndex(Finger.Type type) {
+		switch(type) {
+			case TYPE_THUMB: return 0;
+			case TYPE_INDEX: return 1;
+			case TYPE_MIDDLE: return 2;
+			case TYPE_RING: return 3;
+			default: return 4;
 		}
-		serialHandler.sendCommand(command);
 	}
 	
-	public void react(int index, float distance) {
-		if(distance < CLOSE_THRESHOLD[index] && !positions[index]) {
-			moveFinger(index, true);
-		} else if(distance > OPEN_THRESHOLD[index] && positions[index]) {
-			moveFinger(index, false);
+	public boolean matchesLastState(char[] state) {
+		for(int i = 0; i < 5; i++) {
+			if(state[i] != lastState[i]) {
+				return false;
+			}
 		}
+		return true;
+	}
+	
+	public void sendPositions(FingerList fingers) {
+		char[] command = new char[]{'0','0','0','0','0'};
+		for(Finger finger : fingers) {
+			boolean closed = !finger.isExtended();
+			if(closed) {
+				int fingerIndex = getFingerIndex(finger.type());
+				command[fingerIndex] = '1';
+			}	
+		}
+		if(!matchesLastState(command)) {
+			serialHandler.sendCommand(new String(command));
+			lastState = command;
+		}		
 	}
 }

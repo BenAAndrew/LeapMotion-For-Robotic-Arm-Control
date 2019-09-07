@@ -39,10 +39,10 @@ public class SerialHandler {
 	}
 	
 	public void sendCommand(String command) {
-		CommandHandler.lastCommand = System.currentTimeMillis();
 		System.out.println(command);
 		try {
             arduino.write((command+NEWLINE).getBytes());
+            //arduino.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -29,24 +29,13 @@ class LeapControl extends Listener {
 		System.out.println("Exited");
 	}
 	
-	public int getFingerIndex(Finger.Type type) {
-		switch(type) {
-			case TYPE_THUMB: return 0;
-			case TYPE_INDEX: return 1;
-			case TYPE_MIDDLE: return 2;
-			case TYPE_RING: return 3;
-			default: return 4;
-		}
-	}
-	
+
 	@Override
 	public void onFrame(Controller controller) {
 		Frame frame = controller.frame();	
 		Hand hand = frame.hands().get(0);
-		for(Finger finger : frame.fingers()) {
-			float distance = finger.tipPosition().distanceTo(hand.palmPosition());
-			int fingerIndex = getFingerIndex(finger.type());
-			decisionHandler.react(fingerIndex, distance);
+		if(hand.confidence() == 1 && Math.abs(hand.palmPosition().getX()) < 50 && Math.abs(hand.palmPosition().getZ()) < 50) {
+			decisionHandler.sendPositions(frame.fingers());
 		}
 	}
 }
