@@ -8,3 +8,5 @@ Leapmotion lib included in x64 (property of Leap Motion and also availible in SD
 InMoov.ino is a simple serial parser taking commands as 5 space seperated values (i.e. 100 0 0 0 0 to move thumb 100 steps).
 
 Arm in video is an open source InMoov arm (a great arm project for beginners)
+
+![arm](preview.gif)
